@@ -12,7 +12,13 @@ app.use(serve(path.join(__dirname, 'public')));
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`running on http://localhost:${PORT}`);
-})
+// Export for Vercel (serverless)
+module.exports = app.callback();
+
+// For local development only
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`running on http://localhost:${PORT}`);
+    });
+}
