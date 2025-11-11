@@ -9,26 +9,32 @@ const layout = require('../views/layout');
 const router = new Router();
 
 router.get('/', (ctx) => {
+    ctx.type = 'html';
     ctx.body = layout('Home', homePage);
 });
 
 router.get('/about', (ctx) => {
+    ctx.type = 'html';
     ctx.body = layout('About Us', aboutPage);
 });
 
 router.get('/classes', (ctx) => {
+    ctx.type = 'html';
     ctx.body = layout('Classes', classesPage);
 });
 
 router.get('/contact', (ctx) => {
+    ctx.type = 'html';
     ctx.body = layout('Contact Us', contactPage);
 });
 
 router.get('/gallery', (ctx) => {
+    ctx.type = 'html';
     ctx.body = layout('Gallery', galleryPage);
 });
 
 router.post('/contact', (ctx) => {
+    ctx.type = 'html';
     const thankYouPage = `
         <div class="hero">
             <h1>Thank You!</h1>
@@ -39,4 +45,4 @@ router.post('/contact', (ctx) => {
     ctx.body = layout('Thank You', thankYouPage);
 });
 
-module.exports = router
+module.exports = router;
