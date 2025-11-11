@@ -9,8 +9,8 @@ const homePage = `
         <div class="hero-content">
             <div class="hero-accent"></div>
             <h1 class="hero-title">
-                <span class="hero-title-main">Welcome to 24/7 Fit </span>
-                <span class="hero-title-sub">Elite Fitness Facility</span>
+                <span class="hero-title-main">24/7 Fit </span>
+                <span class="hero-title-sub">Elite Fitness Community</span>
             </h1>
             <p class="hero-tagline">Nothing Will Work Unless You Do</p>
             <div class="hero-cta">
@@ -26,18 +26,16 @@ const homePage = `
 
     <section class="gallery-section">
         <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Grind</h2>
-                <p class="section-subtitle">Passion, Sweat, Victory.</p>
-            </div>
-
             <div class="gallery-grid">
                 <div class="gallery-item"><img src="../../images/lake.jpg" alt="Strength Training"></div>
-                <div class="gallery-item tall"><img src="../../images/lake2.jpg" alt="Cardio Zone"></div>
+                <div class="gallery-item wide"><img src="../../images/lake2.jpg" alt="Cardio Zone"></div>
                 <div class="gallery-item wide"><img src="../../images/joey4.jpg" alt="Group Session"></div>
                 <div class="gallery-item"><img src="../../images/joey.jpg" alt="Heavy Lifting"></div>
                 <div class="gallery-item wide"><img src="../../images/joey2.jpg" alt="Functional Training"></div>
-                <div class="gallery-item"><img src="../../images/joey3.jpg" alt="Athletes"></div>
+                <div class="gallery-item wide"><img src="../../images/joey3.jpg" alt="Athletes"></div>
+                <div class="gallery-item tall"><img src="../../images/red.jpg" alt="Fitness Equipment"></div>
+                <div class="gallery-item wide"><img src="../../images/red2.jpg" alt="Weightlifting Area"></div>
+                <div class="gallery-item wide"><img src="../../images/247.jpg" alt="Personal Training"></div>
             </div>
         </div>
     </section>

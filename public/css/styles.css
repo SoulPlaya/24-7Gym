@@ -307,7 +307,7 @@ nav a:hover::after {
 
 .gallery-section {
   padding: 8rem 0;
-  background: radial-gradient(circle at 20% 20%, rgba(220, 20, 60, 0.1), transparent 70%),
+  background: radial-gradient(circle at 50% 50%, rgba(220, 20, 60, 0.1), transparent 70%),
               linear-gradient(180deg, var(--color-black) 0%, var(--color-black-light) 100%);
   position: relative;
   overflow: hidden;
@@ -365,10 +365,10 @@ nav a:hover::after {
 
 /* optional: size variety */
 .gallery-item.tall {
-  grid-row: span 2;
+  grid-row: span 1;
 }
 .gallery-item.wide {
-  grid-column: span 2;
+  grid-column: span 1;
 }
 
 @media (max-width: 768px) {
