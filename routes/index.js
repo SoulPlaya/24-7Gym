@@ -3,7 +3,6 @@ const homePage = require('../views/pages/home');
 const aboutPage = require('../views/pages/about');
 const classesPage = require('../views/pages/classes');
 const contactPage = require('../views/pages/contact');
-const galleryPage = require('../views/pages/gallery');
 const layout = require('../views/layout');
 
 const router = new Router();
@@ -26,11 +25,6 @@ router.get('/classes', (ctx) => {
 router.get('/contact', (ctx) => {
     ctx.type = 'html';
     ctx.body = layout('Contact Us', contactPage);
-});
-
-router.get('/gallery', (ctx) => {
-    ctx.type = 'html';
-    ctx.body = layout('Gallery', galleryPage);
 });
 
 router.post('/contact', (ctx) => {

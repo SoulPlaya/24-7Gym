@@ -1,9 +1,11 @@
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const router = require('./routes');
+const serve = require('koa-static');
 
 const app = new Koa();
 
+app.use(serve('./public'));
 // Add body parser for POST requests
 app.use(bodyParser());
 

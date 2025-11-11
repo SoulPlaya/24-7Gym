@@ -127,15 +127,6 @@ const pricingPage = `
             <a href="/contact" class="btn" style="margin-bottom: 1rem;">Get Started</a>
         </div>
     </div>
-    
-    <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #f5f5f5; border-radius: 10px;">
-        <h3>Special Offers</h3>
-        <p style="font-size: 1.1rem; margin: 1rem 0;">
-            🎉 First month FREE for annual memberships<br>
-            👥 Bring a friend and both get 20% off<br>
-            🎓 Student discount: 15% off all plans
-        </p>
-    </div>
 </div>
 `;
 
