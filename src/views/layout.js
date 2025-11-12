@@ -15,6 +15,7 @@ const layout = (title, content) => `
             <li><a href="/about">About</a></li>
             <li><a href="/classes">Classes</a></li>
             <li><a href="/contact">Contact</a></li>
+            <li><a href="/login">Login</a></li>
         </ul>
     </nav>
     ${content}
@@ -32,4 +33,4 @@ const layout = (title, content) => `
 </html>
 `;
 
-module.exports = layout;
+export default layout;

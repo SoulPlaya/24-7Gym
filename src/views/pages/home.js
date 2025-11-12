@@ -139,4 +139,4 @@ const homePage = `
 </section>
 `;
 
-module.exports = homePage;
+export default homePage;

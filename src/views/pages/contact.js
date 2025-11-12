@@ -57,4 +57,4 @@ const contactPage = `
 </div>
 `;
 
-module.exports = contactPage;
+export default contactPage;

@@ -38,4 +38,4 @@ const aboutPage = `
 </div>
 `;
 
-module.exports = aboutPage;
+export default aboutPage;
