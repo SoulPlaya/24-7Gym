@@ -13,7 +13,7 @@ const layout = (title, content) => `
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
-            <li><a href="/classes">Classes</a></li>
+            <li><a href="/memberships">memberships</a></li>
             <li><a href="/contact">Contact</a></li>
             <li><a href="/login">Login</a></li>
         </ul>

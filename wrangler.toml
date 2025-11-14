@@ -1,6 +1,6 @@
 name = "24-7-gym-website"
 main = "src/index.js"
-compatibility_date = "2024-11-12"
+compatibility_date = "2024-01-12"
 
 # Assets configuration for serving static files
 # This tells Cloudflare Workers to serve files from the public directory

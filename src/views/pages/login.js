@@ -1,9 +1,10 @@
 const loginPage = `
+      <link rel="stylesheet" href="/css/styles.css">
       <body class="login-page">
             <div class="login-container">
                   <div class="login-card">
                         <div class="login-header">
-                              <h1 class="login-logo">POWERFIT</h1>
+                              <h1 class="login-logo">24/7</h1>
                               <div class="login-accent"></div>
                               <p class="login-subtitle">Welcome back, champion</p>
                         </div>

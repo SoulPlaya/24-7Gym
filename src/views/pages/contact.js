@@ -48,10 +48,12 @@ const contactPage = `
         <div class="card">
             <h3>📞 Phone</h3>
             <p> (404)409-0169</p>
+            <p> (404)660-2822</p>
         </div>
         <div class="card">
             <h3>✉️ Email</h3>
             <p>info@247fitsouth</p>
+            <p>oqbk194@icloud.com</p>
         </div>
     </div>
 </div>

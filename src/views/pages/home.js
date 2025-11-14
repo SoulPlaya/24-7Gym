@@ -77,7 +77,7 @@ const homePage = `
                     <h3 class="feature-title">24/7 Access</h3>
                     <p class="feature-description">Train on your schedule with unlimited round-the-clock access. Your fitness journey doesn't sleep, and neither do we.</p>
                     <div class="feature-link">
-                        <a href="/access">Learn More →</a>
+                        <a href="/classes">Learn More →</a>
                     </div>
                 </div>
 
@@ -85,11 +85,8 @@ const homePage = `
                     <div class="feature-icon">
                         <i data-lucide="castle"></i>
                     </div>
-                    <h3 class="feature-title">Premium Facilities</h3>
-                    <p class="feature-description">Olympic pool, infrared sauna, sports courts, and specialized studios – a complete fitness ecosystem under one roof.</p>
-                    <div class="feature-link">
-                        <a href="/facilities">View Facilities →</a>
-                    </div>
+                    <h3 class="feature-title">Premium Facility</h3>
+                    <p class="feature-description">Experience a state-of-the-art gym designed for performance, comfort, and results. Our premium facility features top-tier equipment, modern training spaces, and an atmosphere built to elevate every workout..</p>
                 </div>
 
                 <div class="feature-card">
@@ -102,7 +99,7 @@ const homePage = `
                         </svg>
                     </div>
                     <h3 class="feature-title">Dynamic Group Classes</h3>
-                    <p class="feature-description">High-energy group sessions including HIIT, yoga, spinning, boxing, and exclusive signature classes designed by our trainers.</p>
+                    <p class="feature-description">High-energy group classes coming.</p>
                     <div class="feature-link">
                         <a href="/classes">Class Schedule →</a>
                     </div>
@@ -110,13 +107,7 @@ const homePage = `
 
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
-                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
-                            <line x1="6" y1="1" x2="6" y2="4"/>
-                            <line x1="10" y1="1" x2="10" y2="4"/>
-                            <line x1="14" y1="1" x2="14" y2="4"/>
-                        </svg>
+                    <i data-lucide="utensils-crossed"></i>
                     </div>
                     <h3 class="feature-title">Nutrition Coaching</h3>
                     <p class="feature-description">Expert nutritional guidance and meal planning to fuel your performance and amplify your transformation results.</p>
