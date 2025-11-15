@@ -4,7 +4,7 @@ const layout = (title, content) => `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${title} - PowerFit Gym</title>
+    <title>${title} - 24/7 Fitness</title>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -12,10 +12,10 @@ const layout = (title, content) => `
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
             <li><a href="/memberships">memberships</a></li>
             <li><a href="/contact">Contact</a></li>
             <li><a href="/login">Login</a></li>
+            <li><a href="/signup">Sign Up</a></li>
         </ul>
     </nav>
     ${content}

@@ -365,17 +365,17 @@ nav a:hover::after {
 
 /* optional: size variety */
 .gallery-item.tall {
-  grid-row: span 1;
+  grid-row: span 2;
 }
 .gallery-item.wide {
-  grid-column: span 1;
+  grid-column: span 2;
 }
 
 @media (max-width: 768px) {
   .gallery-item.tall,
   .gallery-item.wide {
-    grid-column: span 1;
-    grid-row: span 1;
+    grid-column: span 2;
+    grid-row: span 2;
   }
 }
 

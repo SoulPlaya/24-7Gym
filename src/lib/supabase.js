@@ -1,12 +1,16 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://xnoycattompjsmtciyre.supabase.co'
-const supabaseKey = process.env.SUPABASE_KEY
-
-
-export const supabase = createClient(supabaseUrl, supabaseKey, { auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
-  },
-});
+//Returns a new Supabase client for each request.
+export const getSupabase = (env) => {
+  return createClient(
+    env.SUPABASE_URL,
+    env.SUPABASE_ANON_KEY,
+    {
+      auth: {
+        autoRefreshToken: false,   // Workers cannot store tokens in memory
+        persistSession: false,     // Workers cannot use localStorage
+        detectSessionInUrl: false,
+      },
+    }
+  );
+};

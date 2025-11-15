@@ -5,3 +5,7 @@ compatibility_date = "2024-01-12"
 # Assets configuration for serving static files
 # This tells Cloudflare Workers to serve files from the public directory
 assets = { directory = "./public", binding = "ASSETS" }
+
+[vars]
+SUPABASE_URL="https://xnoycattompjsmtciyre.supabase.co"
+SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhub3ljYXR0b21wanNtdGNpeXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNzIwMTEsImV4cCI6MjA3ODY0ODAxMX0.rY5umUkx0jAsw7_IiXTXqM3epDJy-xdmglZUQQvkeBQ"

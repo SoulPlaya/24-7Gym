@@ -48,6 +48,11 @@ const loginPage = `
                                     Don't have an account? <a href="#">Sign Up</a>
                               </div>
                         </form>
+                        
+                        <br>
+                        <div class="hero-cta">
+                              <a href="/" class="btn btn-secondary">Back to home</a>
+                        </div>
                   </div>
             </div>
       </body>
