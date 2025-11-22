@@ -57,7 +57,17 @@ app.get('/contact', (c) => {
 });
 
 // Login page
-app.get('/login', (c) => {
+app.get('/login', async (c) => {
+  const supabase = getSupabase(c.env);
+  const result = await createNewUser(
+    supabase,
+    "Joey",                     // full_name
+    "lstandard1@proton.me",         // email
+    "1234567890",                   // phone
+    "#1Admin8787",                  // password
+    "0987654321"                    // emergency_contact_number
+  );
+
   return c.html(loginPage);
 });
 
@@ -84,13 +94,14 @@ app.post('/login', async (c) => {
 app.post('/signup', async (c) => {
   const body = await c.req.parseBody();
   const email = body.email;
+  const phone = body.phone;
   const password = body.password;
   
 
   const supabase = getSupabase(c.env);
 
   try {
-    await createNewUser(supabase, email, password);
+    await createNewUser(supabase, email, phone, password);
     return c.html('<p>Signup successful! Please check your email to confirm your account.</p>');
   } catch (error) {
     return c.html(`<p>Signup failed: ${error.message}</p>`);

@@ -1,5 +1,6 @@
 Log for tasks needed to be complete pre-launch in order of which should be addressed first.
 # 1 Must get signup functionality to work we need acc already
+    - Make email verification work!!!
 # 2 Supabase token system needs to be checked
 
 
