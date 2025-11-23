@@ -1,67 +1,80 @@
 import { Hono } from "hono";
+import { setCookie, getCookie } from "hono/cookie";
 import { supabase } from "../lib/supabase";
-import { setCookie } from "hono/cookie";
 import loginPage from "../pages/loginPage";
 
 export const auth = new Hono();
 
-// GET /login
+// GET /login page
 auth.get("/login", (c) => c.html(loginPage));
 
-// POST /login
+// POST /login (email + password)
 auth.post("/login", async (c) => {
   const body = await c.req.parseBody();
-  const email = body.email;
-  const password = body.password;
+  const { email, password } = body;
 
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) return c.html(`Login failed: ${error.message}`);
+  if (error || !data.session) {
+    return c.html(`<p>Login failed: ${error?.message || "No session returned"}</p>`);
+  }
 
-  const session = data.session;
-
-  setCookie(c, "sb-access-token", session.access_token, {
+  // Set httpOnly cookies
+  setCookie(c, "sb-access-token", data.session.access_token, {
     httpOnly: true,
     path: "/",
+    sameSite: "Lax",
+    // secure: true, // uncomment in production
   });
-
-  setCookie(c, "sb-refresh-token", session.refresh_token, {
+  setCookie(c, "sb-refresh-token", data.session.refresh_token, {
     httpOnly: true,
     path: "/",
+    sameSite: "Lax",
+    // secure: true, // uncomment in production
   });
 
   return c.redirect("/dashboard");
 });
 
-// Email callback
-auth.get("/auth/callback", (c) => {
-  return c.html(`
-    <script type="module">
-      import { createClient } from "https://esm.sh/@supabase/supabase-js";
-      const supabase = createClient("${process.env.SUPABASE_URL}", "${process.env.SUPABASE_ANON_KEY}");
+// OAuth / email callback
+auth.get("/auth/callback", async (c) => {
+  const code = c.req.query("code");
+  if (!code) return c.redirect("/login");
 
-      const { data } = await supabase.auth.getSession();
+  const { data, error } = await supabase.auth.exchangeCodeForSession({ code });
+  if (error || !data?.session) return c.redirect("/login");
 
-      await fetch("/auth/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data.session)
-      });
+  // Set cookies server-side
+  setCookie(c, "sb-access-token", data.session.access_token, {
+    httpOnly: true,
+    path: "/",
+    sameSite: "Lax",
+  });
+  setCookie(c, "sb-refresh-token", data.session.refresh_token, {
+    httpOnly: true,
+    path: "/",
+    sameSite: "Lax",
+  });
 
-      window.location.href = "/dashboard";
-    </script>
-  `);
+  return c.redirect("/")
 });
 
-// Save tokens after callback
-auth.post("/auth/save", async (c) => {
-  const session = await c.req.json();
+// GET /auth/session — Hydrate client session
+auth.get("/auth/session", async (c) => {
+  const access = getCookie(c, "sb-access-token");
+  const refresh = getCookie(c, "sb-refresh-token");
 
-  setCookie(c, "sb-access-token", session.access_token, { httpOnly: true, path: "/" });
-  setCookie(c, "sb-refresh-token", session.refresh_token, { httpOnly: true, path: "/" });
+  if (!access || !refresh) return c.json({ session: null, user: null });
 
-  return c.json({ success: true });
+  const { data, error } = await supabase.auth.setSession({
+    access_token: access,
+    refresh_token: refresh,
+  });
+
+  if (error) return c.json({ session: null, user: null });
+
+  return c.json({ session: data.session, user: data.user });
 });

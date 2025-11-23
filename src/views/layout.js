@@ -1,4 +1,4 @@
-const layout = (title, content) => `
+const layout = (title, content, supabaseUrl, supabaseAnon) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +18,9 @@ const layout = (title, content) => `
             <li><a href="/signup">Sign Up</a></li>
         </ul>
     </nav>
+
     ${content}
+
     <footer>
         <p>&copy; 2025 24/7 fit Gym. All rights reserved.</p>
         <p>1074 Bear creek blvd suite i, hampton, Ga 30228 | (404) 409-0169</p>
@@ -28,9 +30,33 @@ const layout = (title, content) => `
         document.addEventListener("DOMContentLoaded", function() {
             lucide.createIcons();
         });
-    </script>   
+    </script>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        const SUPABASE_URL = "${supabaseUrl}";
+        const SUPABASE_ANON_KEY = "${supabaseAnon}";
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function hydrateSession() {
+            try {
+                const resp = await fetch('/auth/session', { credentials: 'include' });
+                const { session, user } = await resp.json();
+
+                if (session) {
+                    await supabase.auth.setSession(session);
+                }
+
+                console.log("CLIENT: hydrated user →", user?.email ?? "Unauthenticated");
+            } catch (err) {
+                console.error("CLIENT: session hydration failed", err);
+            }
+        }
+
+        hydrateSession();
+    </script>
 </body>
 </html>
 `;
-
 export default layout;

@@ -79,6 +79,7 @@ export async function createNewUser(supabase, full_name, email, phone, password,
  * Login user (email + password)
  */
 export async function loginUser(supabase, email, password) {
+  console.log("Logging in user:", email);
   if (!email || !password) throw new Error("Email and password required");
 
   const { data, error } = await supabase.auth.signInWithPassword({

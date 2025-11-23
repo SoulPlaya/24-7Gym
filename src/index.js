@@ -20,7 +20,6 @@ const app = new Hono();
 
 // Middleware: restore session from cookies
 app.use('*', async (c, next) => {
-
   const supabase = getSupabase(c.env);
   const access = getCookie(c, 'sb-access-token');
   const refresh = getCookie(c, 'sb-refresh-token');
@@ -30,45 +29,42 @@ app.use('*', async (c, next) => {
       access_token: access,
       refresh_token: refresh,
     });
-    c.set('user', data?.user || null);
+
+    const user = data?.user || null;
+    c.set('user', user);
+
+    console.log("SERVER: User on request:", user?.email ?? "Unauthenticated");
+  } else {
+    c.set('user', null);
+    console.log("SERVER: No session cookies found — user is unauthenticated");
   }
 
   await next();
-});
+})
 
 // Static files
 app.use('/public/*', serveStatic({ root: './' }));
 
 // Routes
 app.get('/', (c) => {
-  return c.html(layout('Home', homePage));
+  return c.html(layout('Home', homePage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 
 app.get('/signup', (c) => {
-  return c.html(layout('SignUp', signUpPage));
+  return c.html(layout('SignUp', signUpPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 
 app.get('/memberships', (c) => {
-  return c.html(layout('Memberships', membershipPage));
+  return c.html(layout('Memberships', membershipPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 
 app.get('/contact', (c) => {
-  return c.html(layout('Contact Us', contactPage));
+  return c.html(layout('Contact Us', contactPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 
 // Login page
 app.get('/login', async (c) => {
-  const supabase = getSupabase(c.env);
-  const result = await createNewUser(
-    supabase,
-    "Joey",                     // full_name
-    "lstandard1@proton.me",         // email
-    "1234567890",                   // phone
-    "#1Admin8787",                  // password
-    "0987654321"                    // emergency_contact_number
-  );
-
-  return c.html(loginPage);
+  return c.html(layout('Login', loginPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 
 app.post('/login', async (c) => {
@@ -78,17 +74,35 @@ app.post('/login', async (c) => {
 
   const supabase = getSupabase(c.env);
 
-  try {
-    const { user, session } = await loginUser(supabase, email, password);
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
 
-    // Save tokens in cookies
-    setCookie(c, 'sb-access-token', session.access_token, { path: '/' });
-    setCookie(c, 'sb-refresh-token', session.refresh_token, { path: '/' });
-
-    return c.redirect('/');
-  } catch (error) {
+  if (error) {
     return c.html(`<p>Login failed: ${error.message}</p>`);
   }
+
+  const session = data.session;
+  if (!session) {
+    return c.html('<p>Login failed: no session returned</p>');
+  }
+
+  // Set secure httpOnly cookies so JS can't read them directly
+  setCookie(c, 'sb-access-token', session.access_token, {
+    httpOnly: true,
+    path: '/',
+    sameSite: 'Lax',
+    secure: true (uncomment in production)
+  });
+  setCookie(c, 'sb-refresh-token', session.refresh_token, {
+    httpOnly: true,
+    path: '/',
+    sameSite: 'Lax',
+    secure: true (uncomment in production)
+  });
+
+  return c.redirect('/');
 });
 
 app.post('/signup', async (c) => {
@@ -96,12 +110,13 @@ app.post('/signup', async (c) => {
   const email = body.email;
   const phone = body.phone;
   const password = body.password;
+  const emergency_contact_number = body.emergency_contact_number;
   
 
   const supabase = getSupabase(c.env);
 
   try {
-    await createNewUser(supabase, email, phone, password);
+    await createNewUser(supabase, email, phone, password, emergency_contact_number);
     return c.html('<p>Signup successful! Please check your email to confirm your account.</p>');
   } catch (error) {
     return c.html(`<p>Signup failed: ${error.message}</p>`);
@@ -136,6 +151,22 @@ app.get('/auth/callback', async (c) => {
   }
 
   return c.redirect('/login');
+});
+
+// Hydrate user session on each request
+app.get('/auth/session', async (c) => {
+  const supabase = getSupabase(c.env);
+  const access = getCookie(c, 'sb-access-token');
+  const refresh = getCookie(c, 'sb-refresh-token');
+
+  if (!access || !refresh) return c.json({ session: null });
+
+  const { data } = await supabase.auth.setSession({
+    access_token: access,
+    refresh_token: refresh,
+  });
+
+  return c.json({ session: data?.session ?? null, user: data?.user ?? null });
 });
 
 // Export

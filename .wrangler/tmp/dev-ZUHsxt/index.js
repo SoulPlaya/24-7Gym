@@ -28,7 +28,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// .wrangler/tmp/bundle-wq80XI/checked-fetch.js
+// .wrangler/tmp/bundle-xmuUQI/checked-fetch.js
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
     (typeof request === "string" ? new Request(request, init) : request).url
@@ -46,7 +46,7 @@ function checkURL(request, init) {
 }
 var urls;
 var init_checked_fetch = __esm({
-  ".wrangler/tmp/bundle-wq80XI/checked-fetch.js"() {
+  ".wrangler/tmp/bundle-xmuUQI/checked-fetch.js"() {
     urls = /* @__PURE__ */ new Set();
     __name(checkURL, "checkURL");
     globalThis.fetch = new Proxy(globalThis.fetch, {
@@ -59,14 +59,14 @@ var init_checked_fetch = __esm({
   }
 });
 
-// .wrangler/tmp/bundle-wq80XI/strip-cf-connecting-ip-header.js
+// .wrangler/tmp/bundle-xmuUQI/strip-cf-connecting-ip-header.js
 function stripCfConnectingIPHeader(input, init) {
   const request = new Request(input, init);
   request.headers.delete("CF-Connecting-IP");
   return request;
 }
 var init_strip_cf_connecting_ip_header = __esm({
-  ".wrangler/tmp/bundle-wq80XI/strip-cf-connecting-ip-header.js"() {
+  ".wrangler/tmp/bundle-xmuUQI/strip-cf-connecting-ip-header.js"() {
     __name(stripCfConnectingIPHeader, "stripCfConnectingIPHeader");
     globalThis.fetch = new Proxy(globalThis.fetch, {
       apply(target, thisArg, argArray) {
@@ -1938,12 +1938,12 @@ var require_cjs = __commonJS({
   }
 });
 
-// .wrangler/tmp/bundle-wq80XI/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-xmuUQI/middleware-loader.entry.ts
 init_checked_fetch();
 init_strip_cf_connecting_ip_header();
 init_modules_watch_stub();
 
-// .wrangler/tmp/bundle-wq80XI/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-xmuUQI/middleware-insertion-facade.js
 init_checked_fetch();
 init_strip_cf_connecting_ip_header();
 init_modules_watch_stub();
@@ -13776,7 +13776,7 @@ var getSupabase = /* @__PURE__ */ __name((env) => {
 init_checked_fetch();
 init_strip_cf_connecting_ip_header();
 init_modules_watch_stub();
-var layout = /* @__PURE__ */ __name((title, content) => `
+var layout = /* @__PURE__ */ __name((title, content, supabaseUrl, supabaseAnon) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13796,7 +13796,9 @@ var layout = /* @__PURE__ */ __name((title, content) => `
             <li><a href="/signup">Sign Up</a></li>
         </ul>
     </nav>
+
     ${content}
+
     <footer>
         <p>&copy; 2025 24/7 fit Gym. All rights reserved.</p>
         <p>1074 Bear creek blvd suite i, hampton, Ga 30228 | (404) 409-0169</p>
@@ -13806,7 +13808,32 @@ var layout = /* @__PURE__ */ __name((title, content) => `
         document.addEventListener("DOMContentLoaded", function() {
             lucide.createIcons();
         });
-    <\/script>   
+    <\/script>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        const SUPABASE_URL = "${supabaseUrl}";
+        const SUPABASE_ANON_KEY = "${supabaseAnon}";
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function hydrateSession() {
+            try {
+                const resp = await fetch('/auth/session', { credentials: 'include' });
+                const { session, user } = await resp.json();
+
+                if (session) {
+                    await supabase.auth.setSession(session);
+                }
+
+                console.log("CLIENT: hydrated user \u2192", user?.email ?? "Unauthenticated");
+            } catch (err) {
+                console.error("CLIENT: session hydration failed", err);
+            }
+        }
+
+        hydrateSession();
+    <\/script>
 </body>
 </html>
 `, "layout");
@@ -14190,21 +14217,6 @@ async function createNewUser(supabase, full_name, email, phone, password, emerge
   };
 }
 __name(createNewUser, "createNewUser");
-async function loginUser(supabase, email, password) {
-  if (!email || !password)
-    throw new Error("Email and password required");
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-  if (error)
-    handleError4(error);
-  return {
-    user: data.user,
-    session: data.session
-  };
-}
-__name(loginUser, "loginUser");
 
 // src/index.js
 var app = new Hono2();
@@ -14217,53 +14229,60 @@ app.use("*", async (c, next) => {
       access_token: access,
       refresh_token: refresh
     });
-    c.set("user", data?.user || null);
+    const user = data?.user || null;
+    c.set("user", user);
+    console.log("SERVER: User on request:", user?.email ?? "Unauthenticated");
+  } else {
+    c.set("user", null);
+    console.log("SERVER: No session cookies found \u2014 user is unauthenticated");
   }
   await next();
 });
 app.use("/public/*", module({ root: "./" }));
 app.get("/", (c) => {
-  return c.html(layout_default("Home", home_default));
+  return c.html(layout_default("Home", home_default, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 app.get("/signup", (c) => {
-  return c.html(layout_default("SignUp", SignUp_default));
+  return c.html(layout_default("SignUp", SignUp_default, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 app.get("/memberships", (c) => {
-  return c.html(layout_default("Memberships", memberships_default));
+  return c.html(layout_default("Memberships", memberships_default, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 app.get("/contact", (c) => {
-  return c.html(layout_default("Contact Us", contact_default));
+  return c.html(layout_default("Contact Us", contact_default, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 app.get("/login", async (c) => {
-  const supabase = getSupabase(c.env);
-  const result = await createNewUser(
-    supabase,
-    "Joey",
-    // full_name
-    "lstandard1@proton.me",
-    // email
-    "1234567890",
-    // phone
-    "#1Admin8787",
-    // password
-    "0987654321"
-    // emergency_contact_number
-  );
-  return c.html(login_default);
+  return c.html(layout_default("Login", login_default, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 app.post("/login", async (c) => {
   const body = await c.req.parseBody();
   const email = body.email;
   const password = body.password;
   const supabase = getSupabase(c.env);
-  try {
-    const { user, session } = await loginUser(supabase, email, password);
-    setCookie(c, "sb-access-token", session.access_token, { path: "/" });
-    setCookie(c, "sb-refresh-token", session.refresh_token, { path: "/" });
-    return c.redirect("/");
-  } catch (error) {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+  if (error) {
     return c.html(`<p>Login failed: ${error.message}</p>`);
   }
+  const session = data.session;
+  if (!session) {
+    return c.html("<p>Login failed: no session returned</p>");
+  }
+  setCookie(c, "sb-access-token", session.access_token, {
+    httpOnly: true,
+    path: "/",
+    sameSite: "Lax",
+    secure: true(uncomment in production)
+  });
+  setCookie(c, "sb-refresh-token", session.refresh_token, {
+    httpOnly: true,
+    path: "/",
+    sameSite: "Lax",
+    secure: true(uncomment in production)
+  });
+  return c.redirect("/");
 });
 app.post(
   "/signup",
@@ -14272,9 +14291,10 @@ app.post(
     const email = body.email;
     const phone = body.phone;
     const password = body.password;
+    const emergency_contact_number = body.emergency_contact_number;
     const supabase = getSupabase(c.env);
     try {
-      await createNewUser(supabase, email, phone, password);
+      await createNewUser(supabase, email, phone, password, emergency_contact_number);
       return c.html("<p>Signup successful! Please check your email to confirm your account.</p>");
     } catch (error) {
       return c.html(`<p>Signup failed: ${error.message}</p>`);
@@ -14300,6 +14320,18 @@ app.get("/auth/callback", async (c) => {
     return c.redirect("/");
   }
   return c.redirect("/login");
+});
+app.get("/auth/session", async (c) => {
+  const supabase = getSupabase(c.env);
+  const access = getCookie(c, "sb-access-token");
+  const refresh = getCookie(c, "sb-refresh-token");
+  if (!access || !refresh)
+    return c.json({ session: null });
+  const { data } = await supabase.auth.setSession({
+    access_token: access,
+    refresh_token: refresh
+  });
+  return c.json({ session: data?.session ?? null, user: data?.user ?? null });
 });
 var src_default = app;
 
@@ -14350,7 +14382,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// .wrangler/tmp/bundle-wq80XI/middleware-insertion-facade.js
+// .wrangler/tmp/bundle-xmuUQI/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -14385,7 +14417,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-wq80XI/middleware-loader.entry.ts
+// .wrangler/tmp/bundle-xmuUQI/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
