@@ -47,11 +47,8 @@ app.use('/public/*', serveStatic({ root: './' }));
 
 // Routes
 app.get('/', (c) => {
-  return c.html(layout('Home', homePage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
-});
-
-app.get('/signup', (c) => {
-  return c.html(layout('SignUp', signUpPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
+  const user = c.get('user');
+  return c.html(layout('Home', homePage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY, user));
 });
 
 app.get('/memberships', (c) => {
@@ -93,20 +90,25 @@ app.post('/login', async (c) => {
     httpOnly: true,
     path: '/',
     sameSite: 'Lax',
-    secure: true (uncomment in production)
+    secure: true 
   });
   setCookie(c, 'sb-refresh-token', session.refresh_token, {
     httpOnly: true,
     path: '/',
     sameSite: 'Lax',
-    secure: true (uncomment in production)
+    secure: true 
   });
 
   return c.redirect('/');
 });
 
+app.get('/signup', async (c) => {
+  return c.html(layout('SignUp', signUpPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
+});
+
 app.post('/signup', async (c) => {
   const body = await c.req.parseBody();
+  const full_name = body.name;
   const email = body.email;
   const phone = body.phone;
   const password = body.password;
@@ -115,9 +117,11 @@ app.post('/signup', async (c) => {
 
   const supabase = getSupabase(c.env);
 
+  console.log(email, phone, password, emergency_contact_number);
+
   try {
-    await createNewUser(supabase, email, phone, password, emergency_contact_number);
-    return c.html('<p>Signup successful! Please check your email to confirm your account.</p>');
+    await createNewUser(supabase, full_name, email, phone, password, emergency_contact_number);
+    return c.redirect('/login');
   } catch (error) {
     return c.html(`<p>Signup failed: ${error.message}</p>`);
   }

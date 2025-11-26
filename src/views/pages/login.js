@@ -8,8 +8,7 @@ const loginPage = `
                               <div class="login-accent"></div>
                               <p class="login-subtitle">Welcome back, champion</p>
                         </div>
-
-                        <form class="login-form">
+                        <form class="login-form" action="/login" method="POST">
                               <div class="login-form-group">
                                     <label for="email" class="login-form-label">Email Address</label>
                                     <input
@@ -21,7 +20,6 @@ const loginPage = `
                                           required
                                     >
                               </div>
-
                               <div class="login-form-group">
                                     <label for="password" class="login-form-label">Password</label>
                                     <input
@@ -33,7 +31,6 @@ const loginPage = `
                                           required
                                     >
                               </div>
-
                               <div class="login-form-options">
                                     <div class="login-remember-me">
                                           <input type="checkbox" id="remember" name="remember" class="login-remember-checkbox">
@@ -41,11 +38,9 @@ const loginPage = `
                                     </div>
                                     <a href="#" class="login-forgot-password">Forgot Password?</a>
                               </div>
-
                               <button type="submit" class="login-btn-submit">Sign In</button>
-
                               <div class="login-signup-link">
-                                    Don't have an account? <a href="#">Sign Up</a>
+                                    Don't have an account? <a href="/signup">Sign Up</a>
                               </div>
                         </form>
                         

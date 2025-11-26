@@ -1,4 +1,4 @@
-const layout = (title, content, supabaseUrl, supabaseAnon) => `
+const layout = (title, content, supabaseUrl, supabaseAnon, user = null) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +14,14 @@ const layout = (title, content, supabaseUrl, supabaseAnon) => `
             <li><a href="/">Home</a></li>
             <li><a href="/memberships">memberships</a></li>
             <li><a href="/contact">Contact</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/signup">Sign Up</a></li>
+            ${user ? `
+                <li class="nav-user-info">
+                    <span>${user.user_metadata?.full_name || user.email}</span>
+                </li>
+            ` : `
+                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">Sign Up</a></li>
+            `}
         </ul>
     </nav>
 
