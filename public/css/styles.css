@@ -1323,3 +1323,48 @@ body.login-page::after {
         align-items: flex-start;
     }
 }
+
+.qr-section {
+  text-align: center;
+  padding: 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.qr-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.qr-image {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #eee;
+  border-radius: 4px;
+}
+
+.user-id {
+  margin: 1rem 0;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.download-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.download-btn:hover {
+  background: #0056b3;
+}

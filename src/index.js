@@ -1,7 +1,10 @@
 import { Hono } from 'hono';
 import { serveStatic } from 'hono/cloudflare-workers';
 import { setCookie, getCookie } from 'hono/cookie';
+
 import { getSupabase } from './lib/supabase.js';
+
+import QRCode from 'qrcode';
 
 import layout from './views/layout.js';
 import homePage from './views/pages/home.js';
@@ -9,7 +12,7 @@ import signUpPage from './views/pages/SignUp.js';
 import membershipPage from './views/pages/memberships.js';
 import contactPage from './views/pages/contact.js';
 import loginPage from './views/pages/login.js';
-//import qrcodepage from './views/pages/qrCode.js';
+import qrCodePage from './views/pages/qrCode.js';
 
 
 
@@ -18,7 +21,7 @@ import { createNewUser, loginUser, logoutUser } from './routes/users.js';
 
 const app = new Hono();
 
-// Middleware: restore session from cookies
+// Restore session from cookies
 app.use('*', async (c, next) => {
   const supabase = getSupabase(c.env);
   const access = getCookie(c, 'sb-access-token');
@@ -128,8 +131,35 @@ app.post('/signup', async (c) => {
 }
 );
 
+//QR Code page
+app.get('/qr-code', async (c) => {
+  const user = c.get('user');
+  if (!user) return c.redirect('/login');
+
+  console.log('QR USER:', user);
+  console.log('USER ID:', user?.id);
+
+  try {
+    const svg = await QRCode.toString(user.id, { type: "svg" })
+
+    return c.html(layout("My QR Code", qrCodePage(svg, user.id), c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY, user));
+  } catch (error) {
+    console.error('QR generation error:', error);
+    return c.html(
+      layout(
+        'Error',
+        '<p>Failed to generate QR code</p>',
+        c.env.SUPABASE_URL,
+        c.env.SUPABASE_ANON_KEY,
+        user
+      )
+    );
+  }
+});
+
+
+
 // Email confirmation callback 
-// Need to test this to make sure it works as expected in the dark till then.
 app.get('/auth/callback', async (c) => {
   const code = c.req.query('code');
   const type = c.req.query('type');

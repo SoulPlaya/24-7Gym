@@ -18,6 +18,7 @@ const layout = (title, content, supabaseUrl, supabaseAnon, user = null) => `
                 <li class="nav-user-info">
                     <span>${user.user_metadata?.full_name || user.email}</span>
                 </li>
+                <li><a href="/qr-code">My QR Code</a></li>
             ` : `
                 <li><a href="/login">Login</a></li>
                 <li><a href="/signup">Sign Up</a></li>
