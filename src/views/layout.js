@@ -15,9 +15,6 @@ const layout = (title, content, supabaseUrl, supabaseAnon, user = null) => `
             <li><a href="/memberships">memberships</a></li>
             <li><a href="/contact">Contact</a></li>
             ${user ? `
-                <li class="nav-user-info">
-                    <span>${user.user_metadata?.full_name || user.email}</span>
-                </li>
                 <li><a href="/qr-code">My QR Code</a></li>
             ` : `
                 <li><a href="/login">Login</a></li>

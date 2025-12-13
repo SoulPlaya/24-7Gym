@@ -62,7 +62,6 @@ app.get('/contact', (c) => {
   return c.html(layout('Contact Us', contactPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
 
-// Login page
 app.get('/login', async (c) => {
   return c.html(layout('Login', loginPage, c.env.SUPABASE_URL, c.env.SUPABASE_ANON_KEY));
 });
