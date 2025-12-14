@@ -9,3 +9,4 @@ assets = { directory = "./public", binding = "ASSETS" }
 [vars]
 SUPABASE_URL="https://xnoycattompjsmtciyre.supabase.co"
 SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhub3ljYXR0b21wanNtdGNpeXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNzIwMTEsImV4cCI6MjA3ODY0ODAxMX0.rY5umUkx0jAsw7_IiXTXqM3epDJy-xdmglZUQQvkeBQ"
+SUPABASE_SERVICE_ROLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhub3ljYXR0b21wanNtdGNpeXJlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzA3MjAxMSwiZXhwIjoyMDc4NjQ4MDExfQ._1CDlnQ6pmKE6gMaexA8GaVf9Tz9N7SoU2h1PF86_HY"
