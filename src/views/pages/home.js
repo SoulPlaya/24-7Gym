@@ -27,15 +27,8 @@ const homePage = `
     <section class="gallery-section">
         <div class="container">
             <div class="gallery-grid">
-                <div class="gallery-item"><img src="../../images/lake.jpg" alt="Strength Training"></div>
-                <div class="gallery-item wide"><img src="../../images/lake2.jpg" alt="Cardio Zone"></div>
                 <div class="gallery-item wide"><img src="../../images/joey4.jpg" alt="Group Session"></div>
                 <div class="gallery-item"><img src="../../images/joey.jpg" alt="Heavy Lifting"></div>
-                <div class="gallery-item wide"><img src="../../images/joey2.jpg" alt="Functional Training"></div>
-                <div class="gallery-item wide"><img src="../../images/joey3.jpg" alt="Athletes"></div>
-                <div class="gallery-item tall"><img src="../../images/red.jpg" alt="Fitness Equipment"></div>
-                <div class="gallery-item wide"><img src="../../images/red2.jpg" alt="Weightlifting Area"></div>
-                <div class="gallery-item wide"><img src="../../images/247.jpg" alt="Personal Training"></div>
             </div>
         </div>
     </section>
@@ -124,7 +117,7 @@ const homePage = `
             <div class="cta-content">
                 <h2 class="cta-title">Ready to Transform?</h2>
                 <p class="cta-text">Join the PowerFit community and start your journey to peak performance today.</p>
-                <a href="/classes" class="btn btn-primary btn-large">View Membership Plans</a>
+                <a href="/memberships" class="btn btn-primary btn-large">View Membership Plans</a>
             </div>
     </div>
 </section>
