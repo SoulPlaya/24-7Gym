@@ -11,7 +11,7 @@ export const getSupabase = (env, accessToken = null) => {
       autoRefreshToken: false,
       persistSession: false,
       detectSessionInUrl: false,
-      debug: true
+      debug: false
     },
   };
 

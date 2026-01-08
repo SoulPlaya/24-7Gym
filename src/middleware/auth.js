@@ -14,24 +14,32 @@ export const requireAuth = async (c, next) => {
 
 export const requireRole = (...allowed) => async (c, next) => {
   const user = c.get('user');
+
+  if (!user) {
+    return c.text('Unauthorized', 401);
+  }
+
   const supabase = getSupabaseAdmin(c.env);
 
   const { data, error } = await supabase
-    .from('users')
+    .from('users') 
     .select('role')
     .eq('id', user.id)
     .single();
 
-  if (error || !allowed.includes(data.role)) {
+  console.log("User role check:", data);
+  if (error || !data || !allowed.includes(data.role)) {
     return c.text('Forbidden', 403);
   }
 
+  // Attach role for downstream handlers
   c.set('userRole', data.role);
+
   await next();
 };
 
 
-// Optional: Get user's role and attach to context
+//Get user's role and attach to context
 export const attachUserRole = async (c, next) => {
   const user = c.get('user');
   

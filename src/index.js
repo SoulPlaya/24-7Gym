@@ -34,26 +34,31 @@ import { createNewUser, loginUser, logoutUser } from './routes/users.js';
 
 const app = new Hono();
 
-// Restore session from cookies
+// Restore session from cookies, hydrate app_role
 app.use('*', async (c, next) => {
   const supabase = getSupabase(c.env);
   const access = getCookie(c, 'sb-access-token');
   const refresh = getCookie(c, 'sb-refresh-token');
 
   if (access && refresh) {
-    const { data } = await supabase.auth.setSession({
+    const { data, error } = await supabase.auth.setSession({
       access_token: access,
       refresh_token: refresh,
     });
 
-    const user = data?.user || null;
-    c.set('user', user);
+    if (!error && data?.session) {
+      const user = data.user;
+
+      c.set('session', data.session);
+    } else {
+      c.set('user', null);
+    }
   } else {
     c.set('user', null);
   }
-
   await next();
 });
+
 
 // Attach user role to context
 app.use('*', attachUserRole);
